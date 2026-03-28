@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Disparos WhatsApp - SECTI Recife</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" type="image/svg+xml">
+
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#0B1120',
+                            primary: '#0ea5e9', // Sky 500
+                            secondary: '#06b6d4', // Cyan 500
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- ApexCharts (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <!-- Phosphor Icons (CDN) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <style>
+        body {
+            background-color: #0B1120;
+            background-image:
+                radial-gradient(ellipse at top right, rgba(14, 165, 233, 0.12), transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(6, 182, 212, 0.12), transparent 50%);
+            background-attachment: fixed;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Classes Mappers */
+        .glass-panel {
+            background-color: rgba(30, 41, 59, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Tabela Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.4);
+        }
+
+        /* Loading Spinner */
+        #loading {
+            transition: opacity 0.4s ease;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- Loading Overlay -->
+    <div id="loading" class="fixed inset-0 z-[100] bg-[#0B1120] flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-slate-700 border-t-[#0ea5e9] rounded-full animate-spin"></div>
+        <p class="mt-4 text-slate-300 font-medium animate-pulse tracking-wide">Carregando monitoramento de disparos
+            WhatsApp • SECTI...</p>
+    </div>
+
+    <!-- Header -->
+    <header class="py-5 border-b border-white/10 glass-panel sticky top-0 z-50 rounded-none">
+        <div class="container mx-auto px-4 lg:px-8 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary to-brand-secondary flex items-center justify-center shadow-lg shadow-brand-primary/20 border border-white/20">
+                    <i class="ph ph-whatsapp-logo text-2xl text-white"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-white tracking-tight leading-tight">Monitoramento de
+                        Disparos</h1>
+                    <p class="text-sm text-brand-secondary font-medium tracking-wide">Transformação Digital (SECTI) -
+                        Recife</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3 bg-slate-900/60 rounded-full py-2 px-4 border border-white/10">
+                <span class="relative flex h-2.5 w-2.5">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <span class="text-xs font-semibold text-slate-300 uppercase tracking-wider">Sistema Online</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 lg:px-8 py-8 space-y-6 flex-1">
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Início do Monitoramento -->
+            <div
+                class="glass-panel rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                <div
+                    class="absolute -right-8 -top-8 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl group-hover:bg-indigo-500/20 transition-all">
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-slate-400 font-medium text-sm uppercase tracking-wider">Início do Monitoramento</h3>
+                    <div
+                        class="w-10 h-10 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400 border border-indigo-500/20">
+                        <i class="ph ph-calendar-blank text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-3xl font-bold text-white mb-1 tracking-tight" id="kpi-inicio">--/--/----</div>
+                <p class="text-xs text-indigo-400/80 font-medium">Primeiro registro da base</p>
+            </div>
+
+            <!-- Total de Disparos -->
+            <div
+                class="glass-panel rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                <div
+                    class="absolute -right-8 -top-8 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl group-hover:bg-sky-500/20 transition-all">
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-slate-400 font-medium text-sm uppercase tracking-wider">Total de Disparos</h3>
+                    <div
+                        class="w-10 h-10 rounded-full bg-sky-500/20 flex items-center justify-center text-sky-400 border border-sky-500/20">
+                        <i class="ph ph-paper-plane-tilt text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-1 tracking-tight" id="kpi-total">0</div>
+                <p class="text-xs text-sky-400/80 font-medium">Volume geral mapeado</p>
+            </div>
+
+            <!-- Taxa de Entrega -->
+            <div
+                class="glass-panel rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                <div
+                    class="absolute -right-8 -top-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all">
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-slate-400 font-medium text-sm uppercase tracking-wider">Taxa de Entrega</h3>
+                    <div
+                        class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
+                        <i class="ph ph-check-circle text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-1 tracking-tight" id="kpi-taxa">0%</div>
+                <p class="text-xs text-emerald-400/80 font-medium">Status confirmados como 'Delivered'</p>
+            </div>
+
+            <!-- Falhas -->
+            <div
+                class="glass-panel rounded-2xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                <div
+                    class="absolute -right-8 -top-8 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all">
+                </div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-slate-400 font-medium text-sm uppercase tracking-wider">Falhas no Envio</h3>
+                    <div
+                        class="w-10 h-10 rounded-full bg-rose-500/20 flex items-center justify-center text-rose-400 border border-rose-500/20">
+                        <i class="ph ph-warning-circle text-xl"></i>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-1 tracking-tight" id="kpi-falhas">0</div>
+                <p class="text-xs text-rose-400/80 font-medium">Undeliverable, Expired ou Rejeitados</p>
+            </div>
+        </div>
+
+        <!-- Charts Row 1 -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Timeline de Disparos (Area Chart) -->
+            <div class="lg:col-span-2 glass-panel rounded-2xl p-6 relative">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-2">
+                    <div>
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="ph ph-trend-up text-brand-primary"></i>
+                            Evolução de Disparos
+                        </h3>
+                        <p class="text-xs text-slate-400">Visão temporal do consumo de envios via API</p>
+                    </div>
+                    <div class="flex flex-wrap justify-end items-center gap-3">
+                        <!-- Date Picker -->
+                        <div
+                            class="flex items-center gap-2 bg-slate-900/50 p-1 px-3 rounded-lg border border-white/10 shadow-inner">
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase">De</span>
+                            <input type="date" id="date-from"
+                                class="bg-transparent text-white text-xs outline-none border-none cursor-pointer [color-scheme:dark]"
+                                style="max-width: 105px;">
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase ml-1">Até</span>
+                            <input type="date" id="date-to"
+                                class="bg-transparent text-white text-xs outline-none border-none cursor-pointer [color-scheme:dark]"
+                                style="max-width: 105px;">
+                            <button onclick="applyDateZoom()"
+                                class="ml-2 px-3 py-1 bg-brand-primary/20 text-brand-primary hover:bg-brand-primary hover:text-white rounded text-[10px] font-bold uppercase tracking-wider transition-colors flex items-center gap-1.5"
+                                title="Filtrar Período">
+                                <i class="ph ph-funnel text-sm"></i> Filtrar
+                            </button>
+                        </div>
+
+                        <!-- Tabs -->
+                        <div class="flex bg-slate-900/50 p-1 rounded-lg border border-white/10 shadow-inner">
+                            <button id="tab-day" onclick="setTimeframe('day')"
+                                class="time-tab px-4 py-1.5 rounded-md text-xs font-semibold transition-all">Dia</button>
+                            <button id="tab-month" onclick="setTimeframe('month')"
+                                class="time-tab px-4 py-1.5 rounded-md text-xs font-semibold transition-all">Mês</button>
+                            <button id="tab-year" onclick="setTimeframe('year')"
+                                class="time-tab px-4 py-1.5 rounded-md text-xs font-semibold transition-all">Ano</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="chart-evolucao" class="mt-4 -ml-2 -mr-2"></div>
+            </div>
+
+            <!-- Status (Donut Chart) -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col relative">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
+                    <i class="ph ph-chart-donut text-brand-secondary"></i>
+                    Distribuição de Status
+                </h3>
+                <p class="text-xs text-slate-400 mb-6">Taxo de eficácia geral dos templates</p>
+                <div id="chart-status" class="flex-1 flex items-center justify-center"></div>
+            </div>
+        </div>
+
+        <!-- Charts Row 2 & Data Table -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Top Templates (Bar Chart) -->
+            <div class="glass-panel rounded-2xl p-6 relative">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
+                    <i class="ph ph-sort-descending text-amber-500"></i>
+                    Top 5 Templates
+                </h3>
+                <p class="text-xs text-slate-400 mb-2">Formatos mais utilizados no sistema</p>
+                <div id="chart-templates" class="mt-2"></div>
+            </div>
+
+            <!-- Origem do Disparo (Donut) -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col relative w-full overflow-hidden">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
+                    <i class="ph ph-plugs-connected text-indigo-400"></i>
+                    Origem do Disparo
+                </h3>
+                <p class="text-xs text-slate-400 mb-6">Fonte de requisição da mensagem (Traffic Source)</p>
+                <div id="chart-traffic" class="flex-1 flex items-center justify-center"></div>
+            </div>
+
+            <!-- Classificação (Donut) -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col relative w-full overflow-hidden">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2 mb-1">
+                    <i class="ph ph-tag text-fuchsia-400"></i>
+                    Tipo de Template
+                </h3>
+                <p class="text-xs text-slate-400 mb-6">Mapeamento por classificação e finalidade</p>
+                <div id="chart-tipo" class="flex-1 flex items-center justify-center"></div>
+            </div>
+        </div>
+
+        <!-- Detalhamento / Filtro -> Data Table -->
+        <div class="glass-panel rounded-2xl overflow-hidden flex flex-col border border-white/10 w-full mb-4">
+            <div
+                class="p-5 border-b border-white/10 flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-800/20">
+                <div>
+                    <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="ph ph-table text-emerald-400"></i>
+                        Histórico e Auditoria
+                    </h3>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto mt-3 sm:mt-0">
+                    <div class="relative w-full sm:w-72">
+                        <i
+                            class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                        <input type="text" id="table-search" placeholder="Filtrar template..."
+                            class="w-full bg-slate-900/60 border border-white/10 text-sm rounded-lg pl-10 pr-4 py-2.5 text-white focus:outline-none focus:border-brand-primary focus:ring-1 transition-all placeholder-slate-500">
+                    </div>
+                    <button onclick="exportToCSV()"
+                        class="h-[42px] px-4 flex items-center justify-center gap-2 bg-emerald-600/90 hover:bg-emerald-500 text-white text-sm font-semibold rounded-lg border border-emerald-500/50 transition-colors shadow-lg"
+                        title="Baixar relatório em formato CSV">
+                        <i class="ph ph-file-csv text-xl hidden sm:inline"></i>
+                        <span class="font-bold tracking-wide uppercase text-xs">Exportar</span>
+                        <i class="ph ph-download-simple sm:hidden"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto custom-scrollbar flex-1 bg-slate-900/10">
+                <table class="w-full text-left border-collapse min-w-[700px]">
+                    <thead>
+                        <tr
+                            class="bg-slate-800/40 text-slate-300 text-xs font-semibold uppercase tracking-wider border-b border-white/10">
+                            <th class="p-4 py-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none relative"
+                                onclick="sortTable('data_envio')">
+                                <div class="flex items-center gap-1.5 min-w-[70px]">Data <i id="sort-data_envio"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-4 py-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none"
+                                onclick="sortTable('template')">
+                                <div class="flex items-center gap-1.5">Template <i id="sort-template"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-4 py-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none"
+                                onclick="sortTable('status')">
+                                <div class="flex items-center gap-1.5">Status <i id="sort-status"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-4 py-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none"
+                                onclick="sortTable('setor_secretaria')">
+                                <div class="flex items-center gap-1.5">Secretaria/Setor <i id="sort-setor_secretaria"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-4 py-3 text-right cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none"
+                                onclick="sortTable('quantidade')">
+                                <div class="flex items-center justify-end gap-1.5">Quantidade <i id="sort-quantidade"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="divide-y divide-white/5">
+                        <!-- JS Injects Here -->
+                    </tbody>
+                </table>
+            </div>
+            <div
+                class="p-4 border-t border-white/10 flex items-center justify-between text-sm text-slate-400 bg-slate-800/30">
+                <span id="pagination-info" class="font-medium">Página 1 de 1</span>
+                <div class="flex gap-2">
+                    <button id="btn-prev" onclick="changePage(-1)"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-white/10 hover:bg-slate-700 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all font-medium">Anterior</button>
+                    <button id="btn-next" onclick="changePage(1)"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800/80 border border-white/10 hover:bg-slate-700 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-all font-medium">Próxima</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Modal Detalhes de Templates -->
+    <div id="modal-templates"
+        class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-950/85 backdrop-blur-md transition-opacity opacity-0 pb-10">
+        <div class="bg-slate-900 border-2 border-slate-700/80 shadow-[0_15px_60px_-10px_rgba(0,0,0,0.8)] ring-1 ring-brand-primary/20 rounded-2xl p-7 w-[90%] max-w-2xl max-h-[85vh] flex flex-col relative transform scale-95 transition-transform"
+            id="modal-templates-content">
+            <button onclick="closeTemplateModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors bg-slate-800 p-1.5 rounded-lg border border-white/10">
+                <i class="ph ph-x text-lg"></i>
+            </button>
+            <h3 class="flex flex-col sm:flex-row sm:items-center gap-3 pr-8 mb-4 mt-2">
+                <span class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="ph ph-calendar-blank text-brand-primary"></i> Detalhamento
+                </span>
+                <div
+                    class="flex items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-white/10 shadow-inner">
+                    <span class="text-[10px] text-slate-400 font-semibold uppercase">De</span>
+                    <input type="date" id="modal-date-from" onchange="updateModalData()"
+                        class="bg-transparent text-slate-200 text-sm outline-none border-none cursor-pointer [color-scheme:dark]">
+                    <span class="text-[10px] text-slate-400 font-semibold uppercase ml-1">Até</span>
+                    <input type="date" id="modal-date-to" onchange="updateModalData()"
+                        class="bg-transparent text-slate-200 text-sm outline-none border-none cursor-pointer [color-scheme:dark]">
+                </div>
+            </h3>
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                <p class="text-sm text-slate-400">Lista completa de disparos para o período selecionado no calendário
+                </p>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <i
+                            class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg"></i>
+                        <input type="text" id="modal-search" placeholder="Buscar template..."
+                            oninput="filterModalTemplates()"
+                            class="w-full bg-slate-900/60 border border-white/10 text-sm rounded-lg pl-9 pr-3 py-2 text-white focus:outline-none focus:border-brand-primary focus:ring-1 transition-all placeholder-slate-500">
+                    </div>
+                    <button onclick="exportModalToCSV()"
+                        class="min-h-[38px] px-3 py-2 flex items-center justify-center gap-1.5 bg-emerald-600/90 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg border border-emerald-500/50 transition-colors shadow-lg"
+                        title="Baixar listagem atual">
+                        <i class="ph ph-file-csv text-base"></i> Exportar
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-y-auto custom-scrollbar flex-1 rounded-lg border border-white/5 bg-slate-800/20">
+                <table class="w-full text-left border-collapse">
+                    <thead class="sticky top-0 bg-slate-800 border-b border-white/10 shadow-sm z-10">
+                        <tr class="text-slate-300 text-[11px] font-semibold uppercase tracking-wider">
+                            <th class="p-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none relative"
+                                onclick="sortModalTable('template')">
+                                <div class="flex items-center gap-1">Template <i id="sort-modal-template"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none text-right relative"
+                                onclick="sortModalTable('total')">
+                                <div class="flex items-center justify-end gap-1">Total <i id="sort-modal-total"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none text-right text-emerald-400 relative"
+                                onclick="sortModalTable('delivered')">
+                                <div class="flex items-center justify-end gap-1">Entregues <i id="sort-modal-delivered"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                            <th class="p-3 cursor-pointer hover:bg-slate-700/50 hover:text-white transition-colors group select-none text-right text-rose-400 relative"
+                                onclick="sortModalTable('failed')">
+                                <div class="flex items-center justify-end gap-1">Falhas <i id="sort-modal-failed"
+                                        class="ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300"></i>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="modal-tbody" class="divide-y divide-white/5 text-sm">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-5 flex justify-end">
+                <button onclick="closeTemplateModal()"
+                    class="px-5 py-2 bg-slate-800 hover:bg-slate-700 font-semibold text-white rounded-lg border border-white/10 transition-colors">Fechar
+                    Painel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts and Logic -->
+    <script>
+        let globalData = [], currentTableData = [], currentPage = 1;
+        const rowsPerPage = 7;
+        let activeSort = { col: null, asc: true };
+        let chartTimeline, chartStatus, chartTopTemplates, chartTraffic, chartTipo;
+        let customZoomBounds = null;
+        let currentTimelineData = null;
+        let currentModalTemplates = [];
+        let activeModalSort = { col: null, asc: true };
+
+        const statusColors = {
+            'Delivered': '#10b981', 'Undeliverable': '#f43f5e', 'Expired': '#f59e0b',
+            'Rejected': '#ef4444', 'Read': '#3b82f6', 'Sent': '#0ea5e9', 'Default': '#64748b'
+        };
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
+            initCharts();
+            await fetchData();
+            setTimeframe('day');
+
+            // Busca (Filtro)
+            document.getElementById('table-search').addEventListener('input', (e) => {
+                const termo = e.target.value.toLowerCase();
+                currentTableData = globalData.filter(i =>
+                    (i.template || '').toLowerCase().includes(termo) ||
+                    (i.status || '').toLowerCase().includes(termo) ||
+                    (i.setor_secretaria || '').toLowerCase().includes(termo)
+                );
+                currentPage = 1;
+                renderTable();
+            });
+        }
+
+        function initCharts() {
+            const common = { chart: { background: 'transparent', toolbar: { show: false }, fontFamily: 'Inter' }, theme: { mode: 'dark' } };
+
+            // Timeline
+            chartTimeline = new ApexCharts(document.querySelector("#chart-evolucao"), {
+                ...common, chart: {
+                    ...common.chart, type: 'area', height: 320,
+                    selection: { enabled: false }, // avoid zoom collision with single clicks
+                    events: {
+                        click: function (event, chartContext, config) {
+                            if (config.dataPointIndex !== undefined && config.dataPointIndex !== -1) {
+                                const pt = chartContext.w.globals.initialSeries[0].data[config.dataPointIndex];
+                                if (pt && pt.dateStr) openTemplateModal(pt.dateStr);
+                            }
+                        },
+                        markerClick: function (event, chartContext, { seriesIndex, dataPointIndex }) {
+                            if (dataPointIndex !== undefined && dataPointIndex !== -1) {
+                                const pt = chartContext.w.globals.initialSeries[0].data[dataPointIndex];
+                                if (pt && pt.dateStr) openTemplateModal(pt.dateStr);
+                            }
+                        }
+                    }
+                },
+                markers: { size: 3, hover: { size: 6 }, strokeWidth: 2, fillOpacity: 1, strokeOpacity: 1 }, // small visible anchors
+
+                colors: ['#0ea5e9'], stroke: { curve: 'smooth', width: 3 },
+                fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.4, opacityTo: 0.05, stops: [0, 90, 100] } },
+                series: [],
+                xaxis: { type: 'datetime', labels: { style: { colors: '#94a3b8' }, datetimeUTC: false, format: 'dd/MM/yy' }, axisBorder: { show: false }, tooltip: { enabled: false } },
+                yaxis: { labels: { formatter: v => Math.round(v), style: { colors: '#94a3b8' } } },
+                dataLabels: { enabled: false }, grid: { borderColor: 'rgba(255,255,255,0.05)', strokeDashArray: 3 },
+                tooltip: {
+                    theme: 'dark',
+                    custom: function ({ series, seriesIndex, dataPointIndex, w }) {
+                        const point = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+                        if (!point) return '';
+
+                        const topTemplates = Object.entries(point.templates).sort((a, b) => b[1].total - a[1].total).slice(0, 5);
+                        let templatesHtml = topTemplates.map(t =>
+                            `<div class="flex flex-col mt-2 pt-1.5 border-t border-white/5 first:border-0 first:pt-0 first:mt-1.5">
+                                <div class="flex justify-between items-center text-[10px] mb-1">
+                                    <span class="text-slate-100 font-semibold truncate max-w-[150px]" title="${t[0]}">${t[0]}</span>
+                                    <span class="text-slate-300 font-bold bg-white/5 px-1 rounded">${t[1].total.toLocaleString('pt-BR')}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-[9px] px-0.5">
+                                    <span class="text-emerald-400/90 font-medium">✓ ${t[1].delivered.toLocaleString('pt-BR')} entregues</span>
+                                    <span class="text-rose-400/90 font-medium">✗ ${t[1].failed.toLocaleString('pt-BR')} falhas</span>
+                                </div>
+                            </div>`
+                        ).join('');
+
+                        const others = Object.keys(point.templates).length - 5;
+                        if (others > 0) {
+                            templatesHtml += `
+                            <div class="w-full pt-1.5 mt-2 border-t border-white/10 text-center">
+                                <span class="text-[10px] text-slate-400 font-medium italic">+ ${others} templates ocultados</span><br>
+                                <span class="text-[10px] text-brand-primary font-bold mt-1 inline-block tracking-wide"><i class="ph ph-hand-pointing"></i> Clique neste ponto do gráfico para expandir</span>
+                            </div>`;
+                        } else {
+                            templatesHtml += `
+                            <div class="w-full text-center mt-3 pt-1">
+                                <span class="text-[9px] text-brand-secondary font-bold tracking-wide uppercase"><i class="ph ph-hand-pointing"></i> Clique neste ponto do gráfico para expandir</span>
+                            </div>`;
+                        }
+
+                        return `
+                        <div class="p-3.5 border border-white/10 bg-slate-900/95 backdrop-blur-xl shadow-2xl text-xs min-w-[220px]" style="border-radius: 8px;">
+                            <div class="font-bold text-slate-300 mb-2 border-b border-white/10 pb-2 flex items-center gap-1.5"><i class="ph ph-calendar-blank text-brand-primary"></i> <span class="text-[13px]">${point.dateStr}</span></div>
+                            <div class="flex flex-col gap-1.5 mb-1 bg-slate-800/50 p-2 rounded-lg border border-white/5">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-300 font-medium tracking-wide">Total Disparos:</span>
+                                    <span class="text-white font-bold text-[14px] ml-2">${point.y.toLocaleString('pt-BR')}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-emerald-400/90 font-medium tracking-wide flex items-center gap-1.5"><i class="ph ph-check-circle"></i> Entregues:</span>
+                                    <span class="text-emerald-400 font-bold ml-2">${point.delivered.toLocaleString('pt-BR')}</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-rose-400/90 font-medium tracking-wide flex items-center gap-1.5"><i class="ph ph-warning-circle"></i> Falhas:</span>
+                                    <span class="text-rose-400 font-bold ml-2">${point.failed.toLocaleString('pt-BR')}</span>
+                                </div>
+                            </div>
+                            <div class="mt-3 border-t border-white/10 pt-2.5">
+                                <div class="text-[10px] text-brand-secondary uppercase tracking-widest font-bold mb-2">Templates Usados</div>
+                                ${templatesHtml}
+                            </div>
+                        </div>`;
+                    }
+                }
+            });
+            chartTimeline.render();
+
+            // Status Donut
+            chartStatus = new ApexCharts(document.querySelector("#chart-status"), {
+                ...common, chart: { ...common.chart, type: 'donut', height: 280 },
+                series: [], labels: [], colors: [], stroke: { show: true, colors: ['#0B1120'], width: 2 },
+                dataLabels: { enabled: false }, legend: { position: 'bottom', labels: { colors: '#e2e8f0' } },
+                plotOptions: { pie: { donut: { size: '75%', labels: { show: true, name: { color: '#94a3b8' }, value: { color: '#fff', fontSize: '20px' } } } } }
+            });
+            chartStatus.render();
+
+            // Templates Bar
+            chartTopTemplates = new ApexCharts(document.querySelector("#chart-templates"), {
+                ...common, chart: { ...common.chart, type: 'bar', height: 280 },
+                colors: ['#06b6d4'],
+                plotOptions: { bar: { horizontal: true, borderRadius: 3, dataLabels: { position: 'top' } } },
+                dataLabels: { enabled: true, textAnchor: 'start', style: { colors: ['#fff'] }, offsetX: 0 },
+                stroke: { width: 1, colors: ['#fff'] },
+                series: [{ name: 'Usos', data: [] }], xaxis: { categories: [], labels: { show: false }, axisBorder: { show: false } },
+                yaxis: { labels: { show: true, style: { colors: '#94a3b8' }, maxWidth: 140 } }, grid: { show: false }
+            });
+            chartTopTemplates.render();
+
+            // Traffic Source
+            chartTraffic = new ApexCharts(document.querySelector("#chart-traffic"), {
+                ...common, chart: { ...common.chart, type: 'donut', height: 280 },
+                series: [], labels: [], colors: ['#a855f7', '#06b6d4', '#475569'], stroke: { show: true, colors: ['#0B1120'], width: 2 },
+                dataLabels: { enabled: false }, legend: { position: 'bottom', labels: { colors: '#e2e8f0' } },
+                plotOptions: { pie: { donut: { size: '70%', labels: { show: true, name: { color: '#94a3b8' }, value: { color: '#fff', fontSize: '18px' } } } } }
+            });
+            chartTraffic.render();
+
+            // Tipo
+            chartTipo = new ApexCharts(document.querySelector("#chart-tipo"), {
+                ...common, chart: { ...common.chart, type: 'donut', height: 280 },
+                series: [], labels: [], colors: ['#d946ef', '#f43f5e', '#8b5cf6', '#14b8a6', '#64748b'], stroke: { show: true, colors: ['#0B1120'], width: 2 },
+                dataLabels: { enabled: false }, legend: { position: 'bottom', labels: { colors: '#e2e8f0' } },
+                plotOptions: { pie: { donut: { size: '70%', labels: { show: true, name: { color: '#94a3b8' }, value: { color: '#fff', fontSize: '18px' } } } } }
+            });
+            chartTipo.render();
+        }
+
+        async function fetchData() {
+            try {
+                const res = await fetch('https://webhook-n8n-dev-conectarecife.recife.pe.gov.br/webhook/dados-infobip');
+                if (!res.ok) throw new Error('API Indisponível');
+                globalData = await res.json();
+            } catch (error) {
+                console.warn("Utilizando Mock Data.", error);
+                globalData = getMockData();
+            }
+
+            // Ocultar overlay de loading
+            document.getElementById('loading').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading').classList.add('hidden'), 400);
+
+            currentTableData = [...globalData];
+            processKPIsAndOverviews();
+            renderTable();
+        }
+
+        function processKPIsAndOverviews() {
+            let total = 0, delivered = 0, failed = 0;
+            const statusMap = {}, templateMap = {}, trafficMap = {}, tipoMap = {};
+            let oldestTimestamp = Infinity;
+            let oldestDateStr = '--/--/----';
+
+            globalData.forEach(item => {
+                const qtd = parseInt(item.quantidade) || 0;
+                const stat = item.status || 'Unknown';
+                const temp = item.template || 'N/A';
+
+                // KPIs
+                total += qtd;
+                if (stat === 'Delivered') delivered += qtd;
+                if (['Undeliverable', 'Expired', 'Rejected'].includes(stat)) failed += qtd;
+
+                const traffic = item.traffic_source || 'Desconhecido / Outro';
+                const tipo = item.tipo || 'Não Classificado';
+
+                // maps
+                statusMap[stat] = (statusMap[stat] || 0) + qtd;
+                templateMap[temp] = (templateMap[temp] || 0) + qtd;
+
+                if (!trafficMap[traffic]) trafficMap[traffic] = new Set();
+                trafficMap[traffic].add(temp);
+
+                if (!tipoMap[tipo]) tipoMap[tipo] = new Set();
+                tipoMap[tipo].add(temp);
+
+                if (item.data_envio) {
+                    const parts = item.data_envio.split('/');
+                    if (parts.length === 3) {
+                        const ts = new Date(parts[2], parts[1] - 1, parts[0]).getTime();
+                        if (ts < oldestTimestamp) {
+                            oldestTimestamp = ts;
+                            oldestDateStr = item.data_envio;
+                        }
+                    }
+                }
+            });
+
+            // Update DOM KPIs
+            const startDOM = document.getElementById('kpi-inicio');
+            if (startDOM) startDOM.innerText = oldestDateStr;
+            document.getElementById('kpi-total').innerText = total.toLocaleString('pt-BR');
+            document.getElementById('kpi-taxa').innerText = total ? ((delivered / total) * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('kpi-falhas').innerText = failed.toLocaleString('pt-BR');
+
+            // Update Donut
+            const sLabels = Object.keys(statusMap);
+            chartStatus.updateOptions({ labels: sLabels, colors: sLabels.map(l => statusColors[l] || statusColors['Default']) });
+            chartStatus.updateSeries(Object.values(statusMap));
+
+            // Update Bar
+            const topTemps = Object.entries(templateMap).sort((a, b) => b[1] - a[1]).slice(0, 5).reverse();
+            chartTopTemplates.updateOptions({ xaxis: { categories: topTemps.map(t => t[0].substring(0, 25) + (t[0].length > 25 ? '..' : '')) } });
+            chartTopTemplates.updateSeries([{ data: topTemps.map(t => t[1]) }]);
+
+            // Update New Donuts (Categorical - Distinct Templates)
+            const trafficKeys = Object.keys(trafficMap);
+            chartTraffic.updateOptions({ labels: trafficKeys });
+            chartTraffic.updateSeries(trafficKeys.map(k => trafficMap[k].size));
+
+            const tipoKeys = Object.keys(tipoMap);
+            chartTipo.updateOptions({ labels: tipoKeys });
+            chartTipo.updateSeries(tipoKeys.map(k => tipoMap[k].size));
+        }
+
+        function setTimeframe(tf) {
+            // Estilizar tabs
+            document.querySelectorAll('.time-tab').forEach(b => {
+                b.classList.remove('bg-brand-primary', 'text-white', 'shadow-md');
+                b.classList.add('text-slate-400', 'hover:text-white', 'bg-transparent');
+            });
+            const at = document.getElementById(`tab-${tf}`);
+            if (at) {
+                at.classList.remove('text-slate-400', 'hover:text-white', 'bg-transparent');
+                at.classList.add('bg-brand-primary', 'text-white', 'shadow-md');
+            }
+
+            // Agrupar
+            const ag = {};
+            globalData.forEach(i => {
+                const parts = i.data_envio.split('/'); if (parts.length < 3) return;
+                let k = i.data_envio;
+                if (tf === 'month') k = `${parts[1]}/${parts[2]}`;
+                if (tf === 'year') k = parts[2];
+
+                if (!ag[k]) ag[k] = { total: 0, delivered: 0, failed: 0, templates: {} };
+                const qtd = parseInt(i.quantidade) || 0;
+                ag[k].total += qtd;
+
+                if (i.status === 'Delivered') ag[k].delivered += qtd;
+                else ag[k].failed += qtd;
+
+                const tmp = i.template || 'N/A';
+                if (!ag[k].templates[tmp]) {
+                    ag[k].templates[tmp] = { total: 0, delivered: 0, failed: 0 };
+                }
+                ag[k].templates[tmp].total += qtd;
+                if (i.status === 'Delivered') ag[k].templates[tmp].delivered += qtd;
+                else ag[k].templates[tmp].failed += qtd;
+            });
+
+            currentTimelineData = ag;
+
+            // Sort logic
+            const parseDate = (d) => {
+                if (tf === 'year') return new Date(d, 0, 1).getTime();
+                if (tf === 'month') return new Date(d.split('/')[1], d.split('/')[0] - 1, 1).getTime();
+                return new Date(d.split('/')[2], d.split('/')[1] - 1, d.split('/')[0]).getTime();
+            };
+            const sc = Object.keys(ag).sort((a, b) => parseDate(a) - parseDate(b));
+
+            if (chartTimeline) {
+                // Provide raw [timestamp, value] pairs for datetime axis
+                const seriesData = sc.map(k => ({
+                    x: parseDate(k),
+                    y: ag[k].total,
+                    delivered: ag[k].delivered,
+                    failed: ag[k].failed,
+                    templates: ag[k].templates,
+                    dateStr: k
+                }));
+
+                const now = new Date();
+                chartTimeline.updateSeries([{ name: 'Disparos', data: seriesData }]);
+
+                setTimeout(() => {
+                    if (customZoomBounds) {
+                        chartTimeline.zoomX(customZoomBounds.min, customZoomBounds.max);
+                        customZoomBounds = null; // reset to allow tabs to work again natively
+                    } else if (tf === 'day') {
+                        // Zoom range to current month
+                        const minD = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+                        const maxD = new Date(now.getFullYear(), now.getMonth() + 1, 0).getTime();
+                        chartTimeline.zoomX(minD, maxD);
+                    } else if (tf === 'month') {
+                        // Zoom range to current year
+                        const minD = new Date(now.getFullYear(), 0, 1).getTime();
+                        const maxD = new Date(now.getFullYear(), 11, 31).getTime();
+                        chartTimeline.zoomX(minD, maxD);
+                    } else {
+                        // Zoom explicitly out
+                        if (seriesData.length > 0) {
+                            const minD = seriesData[0].x;
+                            const maxD = seriesData[seriesData.length - 1].x;
+                            chartTimeline.zoomX(minD, maxD);
+                        }
+                    }
+                }, 50);
+            }
+        }
+
+        function applyDateZoom() {
+            const dFrom = document.getElementById('date-from').value;
+            const dTo = document.getElementById('date-to').value;
+            if (!dFrom || !dTo) return;
+
+            const minD = new Date(dFrom + "T00:00:00").getTime();
+            const maxD = new Date(dTo + "T23:59:59").getTime();
+
+            customZoomBounds = { min: minD, max: maxD };
+
+            // Switch to 'day' mode automatically so the custom range bounds have maximum resolution
+            setTimeframe('day');
+        }
+
+        // Table
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+            const tPages = Math.ceil(currentTableData.length / rowsPerPage) || 1;
+
+            // bounds
+            const paginated = currentTableData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+
+            paginated.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-white/5 transition-colors border-b border-white/5';
+
+                // badge
+                const bc = statusColors[r.status] || statusColors['Default'];
+                const bStyle = `color:${bc}; background:${bc}15; border: 1px solid ${bc}30;`;
+                const badge = `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide uppercase" style="${bStyle}">${r.status}</span>`;
+
+                tr.innerHTML = `
+                    <td class="p-4 text-sm text-slate-300 font-medium">${r.data_envio || '-'}</td>
+                    <td class="p-4 text-sm text-white font-medium">${r.template || '-'}</td>
+                    <td class="p-4">${badge}</td>
+                    <td class="p-4 text-sm text-slate-300">${r.setor_secretaria || '-'}</td>
+                    <td class="p-4 text-sm text-white font-bold text-right">${r.quantidade}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('pagination-info').innerText = `Página ${currentPage} de ${tPages}`;
+            document.getElementById('btn-prev').disabled = currentPage <= 1;
+            document.getElementById('btn-next').disabled = currentPage >= tPages;
+        }
+
+        function changePage(d) {
+            currentPage += d;
+            renderTable();
+        }
+
+        function openTemplateModal(dateStr) {
+            let yyyy_mm_dd;
+            if (dateStr && typeof dateStr === 'string' && dateStr.includes('/')) {
+                const parts = dateStr.split('/');
+                if (parts.length === 3) yyyy_mm_dd = `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+            if (!yyyy_mm_dd) {
+                const today = new Date();
+                yyyy_mm_dd = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            }
+
+            document.getElementById('modal-date-from').value = yyyy_mm_dd;
+            document.getElementById('modal-date-to').value = yyyy_mm_dd;
+
+            const sf = document.getElementById('modal-search');
+            if (sf) sf.value = '';
+
+            // clear sorts
+            activeModalSort = { col: null, asc: true };
+            ['template', 'total', 'delivered', 'failed'].forEach(c => {
+                const i = document.getElementById('sort-modal-' + c);
+                if (i) i.className = 'ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300';
+            });
+
+            updateModalData();
+
+            const m = document.getElementById('modal-templates');
+            const mc = document.getElementById('modal-templates-content');
+            m.classList.remove('hidden'); m.classList.add('flex');
+            setTimeout(() => { m.classList.remove('opacity-0'); mc.classList.remove('scale-95'); mc.classList.add('scale-100'); }, 10);
+        }
+
+        function updateModalData() {
+            const dFrom = document.getElementById('modal-date-from').value;
+            const dTo = document.getElementById('modal-date-to').value;
+            if (!dFrom || !dTo) return;
+
+            const minD = new Date(dFrom + "T00:00:00").getTime();
+            const maxD = new Date(dTo + "T23:59:59").getTime();
+
+            const tmpAg = {};
+            globalData.forEach(item => {
+                const parts = item.data_envio.split('/');
+                if (parts.length === 3) {
+                    const ts = new Date(parts[2], parts[1] - 1, parts[0]).getTime();
+                    if (ts >= minD && ts <= maxD) {
+                        const tmp = item.template || 'N/A';
+                        if (!tmpAg[tmp]) tmpAg[tmp] = { total: 0, delivered: 0, failed: 0 };
+
+                        const qtd = parseInt(item.quantidade) || 0;
+                        tmpAg[tmp].total += qtd;
+                        if (item.status === 'Delivered') tmpAg[tmp].delivered += qtd;
+                        else tmpAg[tmp].failed += qtd;
+                    }
+                }
+            });
+
+            currentModalTemplates = Object.entries(tmpAg).sort((a, b) => b[1].total - a[1].total);
+            filterModalTemplates();
+        }
+
+        function renderModalTable(templates) {
+            const tbody = document.getElementById('modal-tbody');
+            let html = '', totalT = 0, totalD = 0, totalF = 0;
+
+            templates.forEach(t => {
+                totalT += t[1].total; totalD += t[1].delivered; totalF += t[1].failed;
+                html += `
+                    <tr class="hover:bg-white/5 transition-colors group">
+                        <td class="p-3 text-slate-200 font-medium max-w-[200px] break-words" title="${t[0]}">${t[0]}</td>
+                        <td class="p-3 text-right text-slate-300 font-bold">${t[1].total.toLocaleString('pt-BR')}</td>
+                        <td class="p-3 text-right text-emerald-300">${t[1].delivered.toLocaleString('pt-BR')}</td>
+                        <td class="p-3 text-right text-rose-300">${t[1].failed.toLocaleString('pt-BR')}</td>
+                    </tr>
+                `;
+            });
+
+            if (templates.length > 0) {
+                html += `
+                    <tr class="bg-slate-800 font-bold border-t border-white/20">
+                        <td class="p-3 text-brand-primary uppercase text-xs">Total Visível</td>
+                        <td class="p-3 text-right text-slate-100">${totalT.toLocaleString('pt-BR')}</td>
+                        <td class="p-3 text-right text-emerald-400">${totalD.toLocaleString('pt-BR')}</td>
+                        <td class="p-3 text-right text-rose-400">${totalF.toLocaleString('pt-BR')}</td>
+                    </tr>
+                `;
+            } else {
+                html += `<tr><td colspan="4" class="p-8 text-center text-slate-500 font-medium">Nenhum template encontrado para a sua busca.</td></tr>`;
+            }
+            tbody.innerHTML = html;
+        }
+
+        function filterModalTemplates() {
+            const term = document.getElementById('modal-search').value.toLowerCase();
+            let arr = currentModalTemplates;
+            if (term) {
+                arr = currentModalTemplates.filter(t => t[0].toLowerCase().includes(term));
+            }
+
+            if (activeModalSort.col) {
+                arr.sort((a, b) => {
+                    let vA = activeModalSort.col === 'template' ? a[0].toLowerCase() : a[1][activeModalSort.col];
+                    let vB = activeModalSort.col === 'template' ? b[0].toLowerCase() : b[1][activeModalSort.col];
+                    if (vA < vB) return activeModalSort.asc ? -1 : 1;
+                    if (vA > vB) return activeModalSort.asc ? 1 : -1;
+                    return 0;
+                });
+            }
+            renderModalTable(arr);
+        }
+
+        function sortModalTable(col) {
+            if (activeModalSort.col === col) {
+                activeModalSort.asc = !activeModalSort.asc;
+            } else {
+                activeModalSort.col = col;
+                activeModalSort.asc = true;
+            }
+
+            ['template', 'total', 'delivered', 'failed'].forEach(c => {
+                const i = document.getElementById('sort-modal-' + c);
+                if (i) i.className = 'ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300';
+            });
+            const activeIcon = document.getElementById('sort-modal-' + col);
+            if (activeIcon) {
+                activeIcon.className = activeModalSort.asc ? 'ph ph-sort-ascending text-brand-primary' : 'ph ph-sort-descending text-brand-primary';
+            }
+
+            filterModalTemplates();
+        }
+
+        function exportModalToCSV() {
+            const term = document.getElementById('modal-search').value.toLowerCase();
+            let rowsToExport = currentModalTemplates;
+            if (term) rowsToExport = currentModalTemplates.filter(t => t[0].toLowerCase().includes(term));
+
+            if (rowsToExport.length === 0) return;
+
+            const headers = ['Template', 'Total Disparos', 'Entregues', 'Falhas'];
+            const rows = rowsToExport.map(t => [t[0], t[1].total, t[1].delivered, t[1].failed]);
+
+            const csvContent = "\uFEFF" + [
+                headers.join(';'),
+                ...rows.map(e => e.join(';'))
+            ].join("\n");
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+
+            const dFrom = document.getElementById('modal-date-from').value || '00';
+            const dTo = document.getElementById('modal-date-to').value || '00';
+
+            link.setAttribute("download", `detalhamento_templates_${dFrom}_a_${dTo}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function closeTemplateModal() {
+            const m = document.getElementById('modal-templates'), mc = document.getElementById('modal-templates-content');
+            m.classList.add('opacity-0'); mc.classList.remove('scale-100'); mc.classList.add('scale-95');
+            setTimeout(() => { m.classList.add('hidden'); m.classList.remove('flex'); }, 300);
+        }
+
+        function sortTable(col) {
+            if (activeSort.col === col) {
+                activeSort.asc = !activeSort.asc;
+            } else {
+                activeSort.col = col;
+                activeSort.asc = true;
+            }
+
+            // resetar icones
+            ['data_envio', 'template', 'status', 'setor_secretaria', 'quantidade'].forEach(c => {
+                const i = document.getElementById('sort-' + c);
+                if (i) i.className = 'ph ph-arrows-down-up text-slate-500 group-hover:text-slate-300';
+            });
+            const activeIcon = document.getElementById('sort-' + col);
+            if (activeIcon) {
+                activeIcon.className = activeSort.asc ? 'ph ph-sort-ascending text-brand-primary' : 'ph ph-sort-descending text-brand-primary';
+            }
+
+            currentTableData.sort((a, b) => {
+                let valA = a[col] || '';
+                let valB = b[col] || '';
+
+                if (col === 'quantidade') {
+                    valA = parseInt(valA) || 0;
+                    valB = parseInt(valB) || 0;
+                } else if (col === 'data_envio') {
+                    const pA = valA.split('/'); valA = pA.length === 3 ? pA[2] + pA[1] + pA[0] : valA;
+                    const pB = valB.split('/'); valB = pB.length === 3 ? pB[2] + pB[1] + pB[0] : valB;
+                } else {
+                    valA = String(valA).toLowerCase();
+                    valB = String(valB).toLowerCase();
+                }
+
+                if (valA < valB) return activeSort.asc ? -1 : 1;
+                if (valA > valB) return activeSort.asc ? 1 : -1;
+                return 0;
+            });
+
+            currentPage = 1;
+            renderTable();
+        }
+
+        function exportToCSV() {
+            if (!currentTableData || currentTableData.length === 0) return;
+            const headers = ['Data', 'Template', 'Status', 'Setor Responsável', 'Quantidade', 'Origem Tráfego', 'Classificação'];
+
+            const rows = currentTableData.map(r => [
+                r.data_envio || '',
+                r.template || '',
+                r.status || '',
+                r.setor_secretaria || '',
+                r.quantidade || 0,
+                r.traffic_source || 'N/A',
+                r.tipo || 'N/A'
+            ]);
+
+            const csvContent = "\uFEFF" + [
+                headers.join(';'),
+                ...rows.map(e => e.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(';'))
+            ].join("\n");
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            const timestamp = new Date().toISOString().slice(0, 10);
+            link.setAttribute("download", `monitoramento_whatsapp_${timestamp}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function getMockData() {
+            const m = [], st = ['Delivered', 'Delivered', 'Delivered', 'Undeliverable', 'Expired', 'Read', 'Sent'];
+            const tp = ['conectazap_servicos', 'alerta_defesacivil', 'iptu_2026', 'licenciamento', 'saude_vacina'];
+            const se = ['SECTI', 'Defesa Civil', 'Finanças', 'Saúde'];
+            const td = new Date();
+            for (let i = 30; i >= 0; i--) {
+                const d = new Date(td); d.setDate(td.getDate() - i);
+                const ds = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+
+                for (let j = 0; j < (Math.floor(Math.random() * 4) + 2); j++) {
+                    m.push({
+                        data_envio: ds, status: st[Math.floor(Math.random() * st.length)],
+                        template: tp[Math.floor(Math.random() * tp.length)],
+                        quantidade: String(Math.floor(Math.random() * 80) + 5),
+                        setor_secretaria: se[Math.floor(Math.random() * se.length)],
+                        traffic_source: Math.random() > 0.3 ? 'API' : 'Painel Infobip',
+                        tipo: Math.random() > 0.5 ? 'Transacional' : 'Marketing/Informativo'
+                    });
+                }
+            }
+            return m;
+        }
+    </script>
+</body>
+
+</html>
